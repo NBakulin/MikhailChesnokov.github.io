@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+<head>
+	<title>Template title</title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div id="startPage">
+		<h1>Оценка качества вашего ПО!</h1>
+		<h3>Выберите класс ПС</h3>
+		<select id="classSelector">
+			<option value="5011">Операционные системы и средства их расширения</option>
+			<option value="5012">Системы программирования и обслуживающие программы</option>
+			<option value="5013">Программные средства обработки первичной информации</option>
+			<option value="5014">Программные средства защиты и восстановления информации</option>
+			<option value="5015">Программные средства сетевые</option>
+			<option value="5017">Программные средства автоматизации технологии программирования</option>
+			<option value="503">Прикладные программные средства для научных исследований</option>
+			<option value="504">Прикладные программные средства для проектирования</option>
+			<option value="505">Прикладные программные средства для управления техническими средствами и технологическими процессами</option>
+			<option value="506">Прикладные программные средства для решения организационно-экономических задач</option>
+			<option value="509">Программные средства прочие</option>
+		</select>
+		
+		<h3> Выберите фазу жизненного цикла ПС</h3>
+		<select id="stageSelector" class="page1">
+			<option value="analysis">Анализ</option>
+			<option value="design">Проектирование</option>
+			<option value="implementation">Реализация</option>
+			<option value="testing">Тестирование</option>
+			<option value="release">Изготовление</option>
+			<option value="support">Обслуживание (сопровождение)</option>
+		</select>
+		
+		<br>
+		<br>
+		<input type="button" id="continueStartPage" value="Продолжить">
+	</div>
+	
+	<div id="inputDataPage" style="display: none;">
+		<p>Input data page</p>
+	</div>
+	
+	<script>
+		var programClass
+		var programStage
+		
+		var elements = {
+			"Н0101": "Наличие требований к программе по устойчивости функционирования при наличии ошибок во входных данных.",
+			"Н0102": "Возможность обработки ошибочных ситуаций."
+		}
+		
+		var subclasses = {
+			"Устойчивость функционирования":[5011,5012,5013,5014,5015,5016,5017    ,504,505,506,509],
+			"Работоспособность":			[5011,5012,5013,5014,5015,5016,5017,503,504,505,506,509],
+			"Простота конструкции":			[5011,5012,5013,5014,5015,5016,5017,503,504,505,506,509],
+			"Наглядность":					[5011,5012,5013,5014,5015,5016,5017    ,504,505,506,509],
+			"Структурность":				[5011,5012,5013,5014,5015,5016,5017    ,504,505,506,509],
+			"Повторяемость":				[5011,5012,5013,5014,5015,5016,5017,503,504,505,506,509]
+		}
+		
+		var factors = {
+			"Надежность":{
+				"Устойчивость функционирования":{
+					"Средства восстановления при ошибках на входе":["Н0101","Н0102"],
+					"Средства восстановления при сбоях оборудования":[],
+					"Реализация управления средствами восстановления":[]
+				},
+				"Работоспособность":{
+					"Функционирование в заданных режимах":[],
+					"Обеспеение обработки заданного объема информации":[]
+				}
+			},
+			"Сопровождаемость": {
+				"Простота конструкции":{
+					"Простота архитектуры проекта":[],
+					"Сложность архитектуры проекта":[],
+					"Межмодульные связи":[],
+					"Простота кодирования":[]
+				},
+				"Наглядность":{
+					"Зкспертиза принятой системы идентификации":[],
+					"Комментарии логики программ проекта":[],
+					"Оформление текста программы":[]
+				},
+				"Структурность":{
+					"Использование основных логиеских структур":[],
+					"Соблюдение принципа нисходящего программирования":[],
+					"Комментарии обоснования декомпозиции программ при кодировании":[]
+				},
+				"Повторяемость":{
+					"Использование типовых компонентов ПС":[],
+					"Использование типовых проектных решений":[]
+				}
+			}
+		}
+	
+		$('#continueStartPage').click(function(evt) {
+			//evt.preventDefault();
+			programClass = $('#classSelector').val()
+			programStage = $('#stageSelector').val()
+			
+			$('#startPage').remove()
+			$('#inputDataPage').css('display', 'block')
+			printAll()
+		});
+		
+		function printAll() {
+			for (factor in factors) {
+				for (criterium in factors[factor]) {
+					if (subclasses[criterium].indexOf(parseInt(programClass, 10)) != -1) {
+						for (metrics in factors[factor][criterium]) {
+							// if stage is ok
+							for (key in factors[factor][criterium][metrics]) {
+								var elementCode = factors[factor][criterium][metrics][key];
+								$('#inputDataPage').append(
+								"<div>" + 
+								"<p>" + elementCode
+								 + " " +
+								elements[elementCode] + 
+								"</p>" + 
+								"</div>")
+							}
+							
+						}
+					}
+				}
+			}
+		}
+	</script>
+</body>
+</html>
