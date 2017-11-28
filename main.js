@@ -1,26 +1,26 @@
-var programClass
-var programStage
+var programClass;
+var programStage;
 	
 $('#continueStartPage').click(function(evt) {
 	//evt.preventDefault();
-	programClass = $('#classSelector').val()
-	programStage = $('#stageSelector').val()
+	programClass = $('#classSelector').val();
+	programStage = $('#stageSelector').val();
 	
-	$('#startPage').remove()
-	$('#inputTablePage').css('display', 'block')
+	$('#startPage').remove();
+	$('#inputTablePage').css('display', 'block');
 	fillTable()
 });
 
 function fillTable() {
-	for (factor in factors) {
-		for (criterium in factors[factor]) {
-			if (subclasses[criterium].indexOf(parseInt(programClass, 10)) != -1) {
-				for (metrics in factors[factor][criterium]) {
-					if (phases[metrics].indexOf(programStage) != -1) {
-						for (key in factors[factor][criterium][metrics]) {
+	for (var factor in factors) {
+		for (var criterium in factors[factor]) {
+			if (subclasses[criterium].indexOf(parseInt(programClass, 10)) !== -1) {
+				for (var metrics in factors[factor][criterium]) {
+					if (phases[metrics].indexOf(programStage) !== -1) {
+						for (var key in factors[factor][criterium][metrics]) {
 							var elementCode = factors[factor][criterium][metrics][key];
 							var elementName = elements[elementCode];
-							$('#inputTable').append(makeTableRow(elementCode, elementName))
+							$('#inputTable').append(makeTableRow(elementCode, elementName));
 						}
 					}
 				}
