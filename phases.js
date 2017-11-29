@@ -4,7 +4,6 @@ var phases = {
 	"Реализация управления средствами восстановления":["design", "implementation", "testing", "release", "support"],
 	"Функционирование в заданных режимах": ["implementation", "testing", "release", "support"],
 	"Обеспеение обработки заданного объема информации":["implementation", "testing", "release", "support"],
-	
 	"Простота архитектуры проекта": ["analysis", "design", "support"],
 	"Сложность архитектуры проекта": ["design", "implementation", "testing", "release", "support"],
 	"Межмодульные связи": ["design"],
